@@ -1,6 +1,6 @@
 import type { Gift } from "@/types";
 
-export const gifts: Gift[] = [
+export const seedGifts: Omit<Gift, "id" | "sort_order">[] = [
   {
     slug: "lua-de-mel",
     title: "Cota da lua de mel",
@@ -51,7 +51,3 @@ export const gifts: Gift[] = [
     emoji: "💝",
   },
 ];
-
-export function getGift(slug: string): Gift | undefined {
-  return gifts.find((g) => g.slug === slug);
-}

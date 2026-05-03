@@ -1,0 +1,15 @@
+services:
+  web:
+    build: .
+    ports:
+      - "3000:3000"
+    env_file:
+      - .env
+    environment:
+      DATABASE_PATH: /data/wedding.db
+    volumes:
+      - wedding_data:/data
+    restart: unless-stopped
+
+volumes:
+  wedding_data:

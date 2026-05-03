@@ -22,9 +22,11 @@ export interface TransactionWithUser extends Transaction {
 }
 
 export interface Gift {
+  id: number;
   slug: string;
   title: string;
   description: string;
   price_cents: number;
   emoji: string;
+  sort_order: number;
 }

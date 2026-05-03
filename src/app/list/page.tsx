@@ -3,7 +3,7 @@ import { Navbar } from "@/components/layout/Navbar";
 import { GiftList } from "@/components/sections/GiftList";
 import { getDb } from "@/lib/db";
 import { getSession, isAdminCpf } from "@/lib/session";
-import type { Transaction } from "@/types";
+import type { Gift, Transaction } from "@/types";
 
 export const dynamic = "force-dynamic";
 
@@ -24,6 +24,13 @@ export default async function ListPage() {
     )
     .all(session.userId) as Transaction[];
 
+  const gifts = db
+    .prepare(
+      `SELECT id, slug, title, description, price_cents, emoji, sort_order
+       FROM gifts ORDER BY sort_order ASC, id ASC`
+    )
+    .all() as Gift[];
+
   return (
     <>
       <Navbar
@@ -40,7 +47,7 @@ export default async function ListPage() {
             direto na conta dos noivos.
           </p>
         </header>
-        <GiftList myTransactions={myTransactions} />
+        <GiftList gifts={gifts} myTransactions={myTransactions} />
       </main>
     </>
   );

@@ -4,16 +4,16 @@ import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { motion } from "framer-motion";
 import { CheckCircle2, Clock, Heart } from "lucide-react";
-import { gifts } from "@/content/gifts";
 import { PixModal } from "@/components/ui/PixModal";
 import { formatBRL, formatDate } from "@/lib/utils";
 import type { Gift, Transaction } from "@/types";
 
 interface GiftListProps {
+  gifts: Gift[];
   myTransactions: Transaction[];
 }
 
-export function GiftList({ myTransactions }: GiftListProps) {
+export function GiftList({ gifts, myTransactions }: GiftListProps) {
   const router = useRouter();
   const [selected, setSelected] = useState<Gift | null>(null);
 

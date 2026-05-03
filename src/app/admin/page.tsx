@@ -2,9 +2,9 @@ import { redirect } from "next/navigation";
 import { Navbar } from "@/components/layout/Navbar";
 import { getDb } from "@/lib/db";
 import { getSession, isAdminCpf } from "@/lib/session";
-import { gifts } from "@/content/gifts";
 import { AdminTable } from "./AdminTable";
-import type { TransactionWithUser } from "@/types";
+import { GiftAdmin } from "./GiftAdmin";
+import type { Gift, TransactionWithUser } from "@/types";
 
 export const dynamic = "force-dynamic";
 
@@ -37,6 +37,13 @@ export default async function AdminPage() {
     )
     .get() as { confirmed: number; pending: number; total: number };
 
+  const gifts = db
+    .prepare(
+      `SELECT id, slug, title, description, price_cents, emoji, sort_order
+       FROM gifts ORDER BY sort_order ASC, id ASC`
+    )
+    .all() as Gift[];
+
   const giftMap = Object.fromEntries(gifts.map((g) => [g.slug, g.title]));
 
   return (
@@ -56,7 +63,19 @@ export default async function AdminPage() {
           <Stat label="Total de transações" count={totals.total} />
         </div>
 
-        <AdminTable rows={rows} giftMap={giftMap} />
+        <section className="mb-12">
+          <h2 className="mb-4 font-serif text-2xl text-foreground">
+            Transações
+          </h2>
+          <AdminTable rows={rows} giftMap={giftMap} />
+        </section>
+
+        <section>
+          <h2 className="mb-4 font-serif text-2xl text-foreground">
+            Itens da lista
+          </h2>
+          <GiftAdmin gifts={gifts} />
+        </section>
       </main>
     </>
   );

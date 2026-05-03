@@ -6,6 +6,7 @@ import { useState } from "react";
 import { Heart, Loader2 } from "lucide-react";
 import { Button } from "@/components/ui/Button";
 import { Input } from "@/components/ui/Input";
+import { PasswordInput } from "@/components/ui/PasswordInput";
 import { formatCPF } from "@/lib/utils";
 
 export default function LoginPage() {
@@ -63,10 +64,9 @@ export default function LoginPage() {
               }
               required
             />
-            <Input
+            <PasswordInput
               label="Senha"
               name="password"
-              type="password"
               autoComplete="current-password"
               value={password}
               onChange={(e) => setPassword(e.target.value)}

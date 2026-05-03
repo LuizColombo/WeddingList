@@ -6,6 +6,7 @@ import { useState } from "react";
 import { Heart, Loader2 } from "lucide-react";
 import { Button } from "@/components/ui/Button";
 import { Input } from "@/components/ui/Input";
+import { PasswordInput } from "@/components/ui/PasswordInput";
 import { formatCPF } from "@/lib/utils";
 import { isValidCPF } from "@/lib/cpf";
 
@@ -82,10 +83,9 @@ export default function RegisterPage() {
               }
               required
             />
-            <Input
+            <PasswordInput
               label="Senha (mín. 6 caracteres)"
               name="password"
-              type="password"
               autoComplete="new-password"
               value={password}
               onChange={(e) => setPassword(e.target.value)}

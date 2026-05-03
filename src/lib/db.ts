@@ -1,6 +1,7 @@
 import Database from "better-sqlite3";
 import { mkdirSync } from "node:fs";
 import { dirname } from "node:path";
+import { seedGifts } from "@/content/gifts";
 
 const DB_PATH = process.env.DATABASE_PATH || "./data/wedding.db";
 
@@ -36,9 +37,37 @@ export function getDb(): Database.Database {
       FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
     );
 
+    CREATE TABLE IF NOT EXISTS gifts (
+      id INTEGER PRIMARY KEY AUTOINCREMENT,
+      slug TEXT UNIQUE NOT NULL,
+      title TEXT NOT NULL,
+      description TEXT NOT NULL DEFAULT '',
+      price_cents INTEGER NOT NULL DEFAULT 0,
+      emoji TEXT NOT NULL DEFAULT '🎁',
+      sort_order INTEGER NOT NULL DEFAULT 0,
+      created_at TEXT NOT NULL DEFAULT (datetime('now'))
+    );
+
     CREATE INDEX IF NOT EXISTS idx_tx_user ON transactions(user_id);
     CREATE INDEX IF NOT EXISTS idx_tx_status ON transactions(status);
+    CREATE INDEX IF NOT EXISTS idx_gifts_sort ON gifts(sort_order);
   `);
+
+  const giftCount = db
+    .prepare("SELECT COUNT(*) AS n FROM gifts")
+    .get() as { n: number };
+  if (giftCount.n === 0) {
+    const insert = db.prepare(
+      `INSERT INTO gifts (slug, title, description, price_cents, emoji, sort_order)
+       VALUES (?, ?, ?, ?, ?, ?)`
+    );
+    const tx = db.transaction(() => {
+      seedGifts.forEach((g, i) => {
+        insert.run(g.slug, g.title, g.description, g.price_cents, g.emoji, i);
+      });
+    });
+    tx();
+  }
 
   _db = db;
   return db;

@@ -1,7 +1,6 @@
 import { NextResponse } from "next/server";
 import { getDb } from "@/lib/db";
 import { getSession } from "@/lib/session";
-import { getGift } from "@/content/gifts";
 import { pixFromEnv } from "@/lib/pix";
 
 export async function POST(req: Request) {
@@ -17,9 +16,13 @@ export async function POST(req: Request) {
   const customAmount = Number(body.amount_cents || 0);
   const message = body.message ? String(body.message).slice(0, 280) : null;
 
+  const db = getDb();
+
   let amountCents = 0;
   if (giftSlug) {
-    const gift = getGift(giftSlug);
+    const gift = db
+      .prepare("SELECT price_cents FROM gifts WHERE slug = ?")
+      .get(giftSlug) as { price_cents: number } | undefined;
     if (!gift) {
       return NextResponse.json({ error: "Presente inválido" }, { status: 400 });
     }
@@ -41,7 +44,6 @@ export async function POST(req: Request) {
     );
   }
 
-  const db = getDb();
   const result = db
     .prepare(
       `INSERT INTO transactions (user_id, amount_cents, gift_slug, message, status)
