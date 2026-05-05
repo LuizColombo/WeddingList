@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
-import { Heart, Loader2 } from "lucide-react";
+import { Loader2 } from "lucide-react";
 import { Button } from "@/components/ui/Button";
 import { Input } from "@/components/ui/Input";
 import { PasswordInput } from "@/components/ui/PasswordInput";
@@ -50,12 +50,16 @@ export default function RegisterPage() {
       <div className="w-full max-w-sm">
         <Link
           href="/"
-          className="mb-8 flex items-center justify-center gap-2 font-serif text-xl text-accent"
+          className="mb-8 flex flex-col items-center gap-2 text-accent"
         >
-          <Heart className="h-5 w-5 fill-accent" />
-          Nosso Casamento
+          <span className="flex h-12 w-12 items-center justify-center rounded-full border border-accent/30 bg-soft font-serif text-base tracking-tight">
+            E<span className="mx-0.5 text-accent-2">&</span>L
+          </span>
+          <span className="font-serif text-lg">
+            Elisa <span className="font-script text-accent-2">&</span> Luiz Henrique
+          </span>
         </Link>
-        <div className="rounded-3xl border border-border bg-card p-8 shadow-sm">
+        <div className="card-elevated rounded-3xl border border-border bg-card p-8">
           <h1 className="font-serif text-2xl text-foreground">Criar conta</h1>
           <p className="mt-1 text-sm text-foreground/60">
             Pra você poder presentear e acompanhar

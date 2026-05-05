@@ -2,7 +2,7 @@
 
 import { motion, type Variants } from "framer-motion";
 import Link from "next/link";
-import { Heart, Gift } from "lucide-react";
+import { Gift } from "lucide-react";
 import { Button } from "@/components/ui/Button";
 
 const container: Variants = {
@@ -17,20 +17,22 @@ const item: Variants = {
   show: {
     opacity: 1,
     y: 0,
-    transition: { duration: 0.6, ease: [0.22, 1, 0.36, 1] },
+    transition: { duration: 0.7, ease: [0.22, 1, 0.36, 1] },
   },
 };
 
 interface HeroProps {
-  brideAndGroom?: string;
+  bride?: string;
+  groom?: string;
   date?: string;
-  location?: string;
+  dateLong?: string;
 }
 
 export function Hero({
-  brideAndGroom = "Maria & João",
-  date = "20 de dezembro de 2026",
-  location = "São Paulo, SP",
+  bride = "Elisa",
+  groom = "Luiz Henrique",
+  date = "12 . 12 . 2026",
+  dateLong = "Sábado, 12 de dezembro de 2026",
 }: HeroProps) {
   return (
     <section className="relative overflow-hidden">
@@ -38,41 +40,44 @@ export function Hero({
         aria-hidden
         className="pointer-events-none absolute inset-0 -z-10"
       >
-        <div className="absolute -top-32 left-1/2 h-96 w-96 -translate-x-1/2 rounded-full bg-accent/15 blur-3xl" />
+        <div className="absolute -top-40 left-1/2 h-[28rem] w-[28rem] -translate-x-1/2 rounded-full bg-accent/10 blur-3xl" />
         <div className="absolute bottom-0 right-1/4 h-72 w-72 rounded-full bg-accent-2/15 blur-3xl" />
+        <div className="absolute top-1/3 left-0 h-64 w-64 rounded-full bg-soft blur-3xl" />
       </div>
 
       <motion.div
         variants={container}
         initial="hidden"
         animate="show"
-        className="mx-auto flex max-w-3xl flex-col items-center px-6 pb-20 pt-24 text-center sm:pt-32"
+        className="mx-auto flex max-w-3xl flex-col items-center px-6 pb-24 pt-24 text-center sm:pt-32"
       >
-        <motion.div
-          variants={item}
-          className="mb-6 inline-flex items-center gap-2 rounded-full border border-border bg-card px-4 py-1.5 text-xs font-medium uppercase tracking-widest text-accent"
-        >
-          <Heart className="h-3.5 w-3.5 fill-accent" />
-          {date}
+        <motion.div variants={item} className="ornament text-[0.7rem] uppercase tracking-[0.4em]">
+          <span>{date}</span>
         </motion.div>
 
         <motion.h1
           variants={item}
-          className="font-serif text-5xl leading-tight text-foreground sm:text-7xl"
+          className="mt-8 font-serif text-6xl leading-[1.05] text-foreground sm:text-8xl"
         >
-          {brideAndGroom}
+          {bride}
+          <span className="mx-3 align-middle font-script text-accent sm:mx-5">&</span>
+          {groom}
         </motion.h1>
 
-        <motion.p
+        <motion.div
           variants={item}
-          className="mt-4 text-lg text-foreground/70"
+          className="mt-8 flex items-center gap-4 text-foreground/60"
         >
-          {location}
-        </motion.p>
+          <span className="h-px w-10 bg-accent-2/60" />
+          <span className="font-serif text-base italic sm:text-lg">
+            {dateLong}
+          </span>
+          <span className="h-px w-10 bg-accent-2/60" />
+        </motion.div>
 
         <motion.p
           variants={item}
-          className="mt-8 max-w-xl text-balance text-base leading-relaxed text-foreground/80"
+          className="mt-10 max-w-xl text-balance text-base leading-relaxed text-foreground/75"
         >
           Sua presença é o nosso maior presente. Mas se quiser nos ajudar a
           construir essa nova fase, deixamos uma lista com algumas sugestões
@@ -81,7 +86,7 @@ export function Hero({
 
         <motion.div
           variants={item}
-          className="mt-10 flex flex-wrap items-center justify-center gap-3"
+          className="mt-12 flex flex-wrap items-center justify-center gap-3"
         >
           <Link href="/list">
             <Button size="lg">

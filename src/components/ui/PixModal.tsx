@@ -8,14 +8,27 @@ import { Button } from "@/components/ui/Button";
 import { formatBRL } from "@/lib/utils";
 import type { Gift } from "@/types";
 
+interface ExistingTx {
+  id: number;
+  amount_cents: number;
+  pix_code: string;
+}
+
 interface PixModalProps {
   open: boolean;
   onClose: () => void;
   gift: Gift | null;
+  existing?: ExistingTx | null;
   onCreated?: () => void;
 }
 
-export function PixModal({ open, onClose, gift, onCreated }: PixModalProps) {
+export function PixModal({
+  open,
+  onClose,
+  gift,
+  existing,
+  onCreated,
+}: PixModalProps) {
   const [customAmount, setCustomAmount] = useState("");
   const [message, setMessage] = useState("");
   const [pixCode, setPixCode] = useState<string | null>(null);
@@ -34,12 +47,19 @@ export function PixModal({ open, onClose, gift, onCreated }: PixModalProps) {
       setError(null);
       setCopied(false);
       setAmountCents(0);
+      return;
     }
-  }, [open]);
+    if (existing) {
+      setPixCode(existing.pix_code);
+      setTransactionId(existing.id);
+      setAmountCents(existing.amount_cents);
+    }
+  }, [open, existing]);
 
   if (!gift) return null;
 
   const isCustom = gift.price_cents === 0;
+  const isViewing = !!existing;
 
   async function handleGenerate() {
     setError(null);
@@ -121,7 +141,7 @@ export function PixModal({ open, onClose, gift, onCreated }: PixModalProps) {
                 {gift.title}
               </h3>
               <p className="mt-1 text-sm text-foreground/60">
-                {gift.description}
+                {isViewing ? "Pix da sua contribuição pendente" : gift.description}
               </p>
             </div>
 

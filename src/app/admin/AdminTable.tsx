@@ -78,29 +78,35 @@ export function AdminTable({ rows, giftMap }: AdminTableProps) {
               </td>
               <td className="p-4">
                 <div className="flex justify-end gap-2">
-                  {tx.status !== "confirmed" && (
-                    <Button
-                      size="sm"
-                      onClick={() => update(tx.id, "confirmed")}
-                      disabled={busyId === tx.id}
-                    >
-                      {busyId === tx.id ? (
-                        <Loader2 className="h-3 w-3 animate-spin" />
-                      ) : (
-                        <CheckCircle2 className="h-3 w-3" />
+                  {tx.status === "cancelled" ? (
+                    <span className="text-xs italic text-foreground/45">
+                      Cancelado pelo convidado
+                    </span>
+                  ) : (
+                    <>
+                      {tx.status !== "confirmed" && (
+                        <Button
+                          size="sm"
+                          onClick={() => update(tx.id, "confirmed")}
+                          disabled={busyId === tx.id}
+                        >
+                          {busyId === tx.id ? (
+                            <Loader2 className="h-3 w-3 animate-spin" />
+                          ) : (
+                            <CheckCircle2 className="h-3 w-3" />
+                          )}
+                          Confirmar
+                        </Button>
                       )}
-                      Confirmar
-                    </Button>
-                  )}
-                  {tx.status !== "cancelled" && (
-                    <Button
-                      size="sm"
-                      variant="outline"
-                      onClick={() => update(tx.id, "cancelled")}
-                      disabled={busyId === tx.id}
-                    >
-                      <X className="h-3 w-3" />
-                    </Button>
+                      <Button
+                        size="sm"
+                        variant="outline"
+                        onClick={() => update(tx.id, "cancelled")}
+                        disabled={busyId === tx.id}
+                      >
+                        <X className="h-3 w-3" />
+                      </Button>
+                    </>
                   )}
                 </div>
               </td>

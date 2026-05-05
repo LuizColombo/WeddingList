@@ -37,12 +37,15 @@ export default async function ListPage() {
         userName={session.name}
         isAdmin={isAdminCpf(session.cpf)}
       />
-      <main className="mx-auto max-w-6xl px-6 py-12">
-        <header className="mb-10 max-w-2xl">
-          <h1 className="font-serif text-4xl text-foreground sm:text-5xl">
+      <main className="mx-auto max-w-6xl px-6 py-14">
+        <header className="mb-12 max-w-2xl">
+          <span className="ornament text-[0.7rem] uppercase tracking-[0.4em] text-accent-2">
+            <span>Elisa & Luiz Henrique</span>
+          </span>
+          <h1 className="mt-5 font-serif text-5xl text-foreground sm:text-6xl">
             Lista de presentes
           </h1>
-          <p className="mt-3 text-foreground/70">
+          <p className="mt-4 text-foreground/70">
             Escolha um item da lista. Você gera o Pix na hora e o pagamento cai
             direto na conta dos noivos.
           </p>

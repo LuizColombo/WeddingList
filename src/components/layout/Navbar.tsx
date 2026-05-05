@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { Heart, LogOut, Shield } from "lucide-react";
+import { LogOut, Shield } from "lucide-react";
 import { Button } from "@/components/ui/Button";
 
 interface NavbarProps {
@@ -20,14 +20,18 @@ export function Navbar({ userName, isAdmin }: NavbarProps) {
   }
 
   return (
-    <header className="sticky top-0 z-40 w-full border-b border-border bg-background/80 backdrop-blur">
+    <header className="sticky top-0 z-40 w-full border-b border-border/70 bg-background/75 backdrop-blur-md">
       <div className="mx-auto flex h-16 max-w-5xl items-center justify-between px-6">
         <Link
           href="/"
-          className="flex items-center gap-2 font-serif text-xl text-accent"
+          className="group flex items-center gap-3 text-accent"
         >
-          <Heart className="h-5 w-5 fill-accent" />
-          <span>Nosso Casamento</span>
+          <span className="flex h-9 w-9 items-center justify-center rounded-full border border-accent/30 bg-soft font-serif text-sm tracking-tight">
+            E<span className="mx-0.5 text-accent-2">&</span>L
+          </span>
+          <span className="hidden font-serif text-lg sm:inline">
+            Elisa <span className="font-script text-accent-2">&</span> Luiz Henrique
+          </span>
         </Link>
 
         <nav className="flex items-center gap-2">

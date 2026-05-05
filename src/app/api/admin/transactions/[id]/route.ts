@@ -24,16 +24,28 @@ export async function PATCH(
   }
 
   const db = getDb();
-  const confirmed_at = status === "confirmed" ? new Date().toISOString() : null;
-  const result = db
-    .prepare(
-      `UPDATE transactions SET status = ?, confirmed_at = ? WHERE id = ?`
-    )
-    .run(status, confirmed_at, txId);
+  const current = db
+    .prepare(`SELECT status FROM transactions WHERE id = ?`)
+    .get(txId) as { status: string } | undefined;
 
-  if (result.changes === 0) {
-    return NextResponse.json({ error: "Transação não encontrada" }, { status: 404 });
+  if (!current) {
+    return NextResponse.json(
+      { error: "Transação não encontrada" },
+      { status: 404 }
+    );
   }
+
+  if (current.status === "cancelled" && status !== "cancelled") {
+    return NextResponse.json(
+      { error: "Transação cancelada não pode ser reativada" },
+      { status: 409 }
+    );
+  }
+
+  const confirmed_at = status === "confirmed" ? new Date().toISOString() : null;
+  db.prepare(
+    `UPDATE transactions SET status = ?, confirmed_at = ? WHERE id = ?`
+  ).run(status, confirmed_at, txId);
 
   return NextResponse.json({ ok: true });
 }
