@@ -1,25 +1,30 @@
-app = "wedding-list"
-primary_region = "gru"
+# fly.toml app configuration file generated for weddinglist on 2026-05-06T11:21:57Z
+#
+# See https://fly.io/docs/reference/configuration/ for information about how to use this file.
+#
+
+app = 'weddinglist'
+primary_region = 'gru'
 
 [build]
 
 [env]
-  DATABASE_PATH = "/data/wedding.db"
-  NODE_ENV = "production"
-  PORT = "3000"
+  DATABASE_PATH = '/data/wedding.db'
+  NODE_ENV = 'production'
+  PORT = '3000'
 
 [[mounts]]
-  source = "data"
-  destination = "/data"
+  source = 'data'
+  destination = '/data'
 
 [http_service]
   internal_port = 3000
   force_https = true
-  auto_stop_machines = "suspend"
+  auto_stop_machines = 'suspend'
   auto_start_machines = true
   min_machines_running = 0
 
 [[vm]]
-  cpu_kind = "shared"
+  cpu_kind = 'shared'
   cpus = 1
   memory_mb = 512
